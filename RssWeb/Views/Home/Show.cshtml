@@ -1,0 +1,78 @@
+﻿@*@model PagedList.IPagedList<RssWeb.Models.FullRss>*@
+@model IEnumerable<RssWeb.Models.FullRss>
+
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Show";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Новостная лента. POST.</h2>
+
+<div>
+    <p>
+
+        @using (Html.BeginForm("Show", "Home", FormMethod.Post))
+        {
+            <text>Источник ленты:</text>
+            @Html.DropDownList("selectedSource", ViewBag.sourcesList as SelectList, "All")
+            <table>
+                <tr>
+                    <td>@Html.RadioButton("Sort", "Date")</td>
+                    <td> Сортировать<br />по дате</td>
+                    <td>@Html.RadioButton("Sort", "Source")</td>
+                    <td> Сортировать<br />по источнику</td>
+                </tr>
+            </table>
+            <input type="submit" value="Просмотреть" class="btn btn-default" />
+        }
+    </p>
+</div>
+<div>
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Headline</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Source)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Headline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    @*Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("ShowList", new { page }))*@
+
+    @using (Html.BeginForm("ShowPage", "Home", FormMethod.Post))
+    {
+        @Model
+
+        <input type="submit" value="<<" class="btn btn-default" name="back"/>
+        <input type="submit" value=">>" class="btn btn-default" name="next"/>
+    }
+
+
+</div>
+
+

@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "AJAX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Новостная лента. AJAX</h2>
+
+<div>
+
+    @using (Ajax.BeginForm("AjaxRss", "Home", new AjaxOptions { UpdateTargetId = "results" }))
+    {
+        <text>Источник ленты:</text>
+
+        @Html.DropDownList("selectedSource", ViewBag.sourcesList as SelectList, "All")
+        <table>
+            <tr>
+                <td>@Html.RadioButton("Sort", "Date")</td>
+                <td> Сортировать<br />по дате</td>
+                <td>@Html.RadioButton("Sort", "Source")</td>
+                <td> Сортировать<br />по источнику</td>
+            </tr>
+        </table>
+        <input type="submit" value="Show" class="btn btn-default" />
+    }
+    <div id="results"></div>
+    <div>
+        <text>Страница </text> @(ViewBag.Pages < ViewBag.Page ? 0 : ViewBag.Page) <text>из</text> @ViewBag.Pages
+    </div>
+
+</div>
+

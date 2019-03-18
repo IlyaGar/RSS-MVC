@@ -1,0 +1,48 @@
+﻿@*@model IEnumerable<RssWeb.Models.FullRss>*@
+@model PagedList.IPagedList<RssWeb.Models.FullRss>
+
+
+@using PagedList.Mvc;
+
+
+<div id="searchresults">
+
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Headline</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Source)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Headline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+
+    Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+    @Html.PagedListPager(
+    Model,
+    page => Url.Action("AjaxRss", new { page = page}),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions(){  HttpMethod = "GET", UpdateTargetId = "searchresults" }))
+
+</div>
